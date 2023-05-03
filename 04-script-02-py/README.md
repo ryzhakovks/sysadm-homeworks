@@ -36,11 +36,17 @@ c = a + b
 
 ### Вопросы:
 
+
 | Вопрос  | Ответ |
 | ------------- | ------------- |
-| Какое значение будет присвоено переменной `c`?  | ???  |
-| Как получить для переменной `c` значение 12?  | ???  |
-| Как получить для переменной `c` значение 3?  | ???  |
+| Какое значение будет присвоено переменной `c`?  | будет ошибка т.к. сложения  строки и числа |
+| Как получить для переменной `c` значение 12?  | можно так а='1'  |
+| Как получить для переменной `c` значение 3?  | a = 1 
+b = '2'
+b = int(b)
+c = a + b  |
+
+
 
 ------
 
@@ -68,13 +74,24 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+#!/usr/bin/env python3
+import os
+
+basedir = "~/netology/sysadm-homeworks"
+bash_command = [f"cd {basedir}", "git status "]
+result_os = os.popen(' && '.join(bash_command)).read()
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('modified:', basedir)
+        print(prepare_result)
+
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+% python3 test.py
+    ~/netology/sysadm-homeworks   README.md
 ```
 
 ------
@@ -86,13 +103,39 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import sys
+
+basedir = ""
+try:
+    basedir = sys.argv[1]
+except:
+    print("Incorrect repository path")
+
+if basedir != "":
+        bash_command = [f"cd {basedir}",  "git status "]
+        result_os1 = os.listdir(basedir);
+
+        if result_os1.__contains__(".git"):
+                result_os = os.popen(' && '.join(bash_command)).read()
+                for result in result_os.split('\n'):
+                    if result.find('modified') != -1:
+                        prepare_result = result.replace('modified:', basedir)
+                        print(prepare_result)
+        else:
+                print("There is no git repository on the entered path")
+
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+% python3 test2.py Documents/DevOps/git/devops-netology
+    Documents/DevOps/git/devops-netology   README.md
+% python3 test2.py Documents/DevOps/
+There is no git repository on the entered path
 ```
 
 ------
@@ -114,13 +157,37 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import socket
+import json
+
+conf_file="config.json"
+
+with open(conf_file) as json_data_file:
+    conf = json.load(json_data_file)
+
+for host, ip in conf.items():
+    new_ip=socket.gethostbyname(host)
+
+    if (ip != new_ip):
+        print ('[ERROR] {} IP mismatch: {} {}'.format(host,ip,new_ip))
+        conf[host]=new_ip
+
+for host, ip in conf.items():
+    print('{} - {}'.format(host,ip))
+
+with open(conf_file, "w") as json_data_file:
+    json.dump(conf, json_data_file, indent=2)
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+drive.google.com - 74.125.131.194
+mail.google.com - 64.233.162.19
+google.com - 173.194.221.138
 ```
 
 ------
